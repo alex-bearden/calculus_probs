@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Calculus Problems Page</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script type="text/javascript" id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+
+    <body>
+        <form action="{% url 'calc_probs:check_result' %}" method="POST">
+            {% csrf_token %}
+            <fieldset>
+                <legend>
+                    <h1>Put in an integrand and indefinite integral to check.</h1>
+                </legend>
+                {% if error_message %}
+                    <h3 style="color:red;"">&#x1F6A8; {{ error_message }} &#x1F6A8;</h3>
+                {% endif %}
+                {% if latex_result %}
+                    {% if correct %}
+                        <h3>&#x1F389; Correct!!! \({{ latex_result }}\) &#x1F483;</h3>
+                    {% else %}
+                        <h3>&#x1F62D; Not correct! \({{ latex_result }}\) &#x1F62D;</h3>
+                    {% endif %}
+                {% endif %}
+                {% if prev_grand_input %}
+                    <p>Integrand input was: {{ prev_grand_input }}</p>
+                {% endif %}
+                {% if prev_ii_input %}
+                    <p>Indefinite integral input was: {{ prev_ii_input }}</p>
+                {% endif %}
+                <label for="user_input"><h3>Integrand:</h3></label><input type="text" id="grand_input" name="grand_input"><br>
+                <label for="user_input"><h3>Indefinite integral:</h3></label><input type="text" id="ii_input" name="ii_input"><br>
+            </fieldset>
+            <br><br>
+            <input type="submit" name="submit" value="Submit!">
+            <br><br>
+        </form>
+        <hr>
+        Note: This only supports non-constant integrands with domain all of \(\mathbb R\).<br>
+        Inputs must be valid, non-empty, sympy expressions in one variable, x.<br>
+        In particular, use an asterisk, "*", for multiplication, and two asterisks, "**", for an exponent.<br>
+        For example, \( e^x + 2x^2 + \arctan(x) \) should be input as: exp(x) + 2*x**2 + atan(x).<br>
+        <br>
+        <a href="{% url 'calc_probs:index' %}">Back to home page.</a>
+    </body>
+
+</html>

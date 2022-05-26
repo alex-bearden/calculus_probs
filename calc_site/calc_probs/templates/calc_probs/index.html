@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Calculus Problems Page</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script type="text/javascript" id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+
+    <body>
+        <h1>Welcome to the calculus practice problems page!</h1>
+        {% if integral_question_list %}
+            <ul>
+                {% for question in integral_question_list %}
+                    <li>    Problem {{ question.id }}:
+                            <a href="{% url 'calc_probs:detail' question.id %}">\({{ question.latex_integral}}\)</a>
+                            ({{ question.technique }})
+                            <br><br>
+                    </li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'calc_probs:detail' random_id %}">Take me to a random problem!</a>
+        {% else %}
+            <p>No questions are available.</p>
+        {% endif %}
+        <br><br>
+        <a href="{% url 'calc_probs:check' %}">Check an answer.</a>
+    </body>
+
+</html>

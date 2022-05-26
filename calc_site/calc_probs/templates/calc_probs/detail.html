@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Problem {{ question.id }}</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script type="text/javascript" id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+    </head>
+
+    <body>
+        <div align="center"><h1>Problem {{ question.id }} </h1></div>
+            
+        <form action="{% url 'calc_probs:result' question.id %}" method="POST">
+            {% csrf_token %}
+            <fieldset>
+                <legend>
+                    <h2>Evaluate \({{ question.latex_integral }}\).</h2>
+                </legend>
+                {% if correct %}
+                    <h3>&#x1F389; Great job, your answer was correct!!! &#x1F483;</h3>
+                    <p>Input was: {{ previous_input }}</p>
+                    <p>Rendered input: \({{ latex_previous }}\)</p>
+                    <p><a href="{% url 'calc_probs:detail' random_id %}" align="center">Take me to another random problem!</a></p>
+                {% endif %}
+                {% if incorrect %}
+                    <h3>&#x1F62D; Sorry, your answer was not correct. Try again! &#x1F600;</h3>
+                    <br>
+                    <p>Input was: {{ previous_input }}</p>
+                    <p>Rendered input: \({{ latex_previous }}\)</p>
+                {% endif %}
+                {% if error_message %}
+                    <h3 style="color:red;"">&#x1F6A8; {{ error_message }} &#x1F6A8;</h3>
+                    <br>
+                    <p>Input was: {{ previous_input }}</p>
+                {% endif %}
+                <label for="user_answer"><h3>Answer:</h3></label><input type="text" id="user_answer" name="user_answer"> + C<br>
+            </fieldset>
+            <br>
+            <input type="submit" name="preview" value="Preview">
+            {% if preview %}
+                <br><br>              
+                Answer Preview: \({{ latex_previous }}\) + C
+                <br><br>
+                Input was: {{ previous_input }}
+                <br><br>
+                (Don't forget to re-enter before submitting!)
+            {% endif %}
+            <br><br>
+            <input type="submit" name="submit" value="Submit!">
+            <br><br>
+        </form>
+        <hr>
+        Note: Inputs must be valid, non-empty, sympy expressions in one variable, x.<br>
+        In particular, use an asterisk, "*", for multiplication, and two asterisks, "**", for an exponent.<br>
+        For example, \( e^x + 2x^2 + \arctan(x) \) should be input as: exp(x) + 2*x**2 + atan(x)<br>
+        <br>
+        <a href="{% url 'calc_probs:index' %}">Back to home page.</a>
+
+    </body>
+
+</html>
