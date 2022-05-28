@@ -10,8 +10,12 @@
     </head>
 
     <body>
-        <h1>Welcome to the calculus practice problems page!</h1>
-        {% if integral_question_list %}
+        <h1>Welcome to the indefinite integrals practice problems page!</h1>
+        &#x1F913; <a href="{% url 'calc_probs:detail' random_id %}">Take me to a random problem.</a> &#x1F913;
+        <br><br>
+        &#x2705; <a href="{% url 'calc_probs:check' %}">Check an answer.</a> &#x2705;
+        <br>
+        <h2>Problem List</h2>
             <ul>
                 {% for question in integral_question_list %}
                     <li>    Problem {{ question.id }}:
@@ -21,12 +25,6 @@
                     </li>
                 {% endfor %}
             </ul>
-            <a href="{% url 'calc_probs:detail' random_id %}">Take me to a random problem!</a>
-        {% else %}
-            <p>No questions are available.</p>
-        {% endif %}
-        <br><br>
-        <a href="{% url 'calc_probs:check' %}">Check an answer.</a>
     </body>
 
 </html>

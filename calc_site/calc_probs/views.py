@@ -27,7 +27,7 @@ def result(request, question_id):
     user_answer = request.POST.get('user_answer')
     try:
         x = Symbol('x')
-        latex_previous = latex(eval(user_answer))
+        latex_previous = latex(parsing.sympy_parser.parse_expr(user_answer))
         correct = checker(question.integrand, user_answer)
         if 'preview' in request.POST:
             return render(request, 'calc_probs/detail.html',
@@ -68,8 +68,8 @@ def check_result(request):
     prev_ii_input = request.POST.get('ii_input')
     x = Symbol('x')
     try:
-        latex_result_true = latex(Integral(eval(prev_grand_input), x)) + ' = ' + latex(eval(prev_ii_input)) + ' + C'
-        latex_result_false = latex(Integral(eval(prev_grand_input), x)) + r' \not= ' +latex(eval(prev_ii_input)) + ' + C'
+        latex_result_true = latex(Integral(parsing.sympy_parser.parse_expr(prev_grand_input), x)) + ' = ' + latex(parsing.sympy_parser.parse_expr(prev_ii_input)) + ' + C'
+        latex_result_false = latex(Integral(parsing.sympy_parser.parse_expr(prev_grand_input), x)) + r' \not= ' +latex(parsing.sympy_parser.parse_expr(prev_ii_input)) + ' + C'
         correct = checker(prev_grand_input, prev_ii_input)
         if correct:
             return render(request, 'calc_probs/check.html',

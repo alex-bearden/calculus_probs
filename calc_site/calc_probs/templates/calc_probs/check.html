@@ -40,11 +40,22 @@
             <br><br>
         </form>
         <hr>
-        Note: This only supports non-constant integrands with domain all of \(\mathbb R\).<br>
-        Inputs must be valid, non-empty, sympy expressions in one variable, x.<br>
-        In particular, use an asterisk, "*", for multiplication, and two asterisks, "**", for an exponent.<br>
-        For example, \( e^x + 2x^2 + \arctan(x) \) should be input as: exp(x) + 2*x**2 + atan(x).<br>
-        <br>
+
+        Notes: 
+        <ul>
+            <li>
+                Inputs must be valid, non-empty, sympy expressions in one variable, x.
+                In particular, use an asterisk, "*", for multiplication, and two asterisks, "**", for an exponent.
+                For example, \( e^x + 2x^2 + \arctan(x) \) should be input as: exp(x) + 2*x**2 + atan(x).
+            </li>
+            <li>
+                This does <b>not</b> correctly handle most things involving an absolute value (and thus, many integrals involving a logarithm) or many piecewise functions well.
+            </li>
+            <li>
+                Other than that, it should correctly handle any other function you can write with a single expression, especially if the domain is either a single interval or a conull set (e.g., x**2, sqrt(x), 1/x, tan(x)).<br>
+            </li>
+        </ul>
+
         <a href="{% url 'calc_probs:index' %}">Back to home page.</a>
     </body>
 
