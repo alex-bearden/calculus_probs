@@ -11,10 +11,12 @@
 
     <body>
         <h1>Welcome to the indefinite integrals practice problems page!</h1>
-        &#x1F913; <a href="{% url 'calc_probs:detail' random_id %}">Take me to a random problem.</a> &#x1F913;
-        <br><br>
         &#x2705; <a href="{% url 'calc_probs:check' %}">Check an answer.</a> &#x2705;
+        <br><br>
+        &#x1F913; <a href="{% url 'calc_probs:random_problem' %}">Take me to a random problem.</a> &#x1F913;
         <br>
+        <br>
+
         <h2>Problem List</h2>
             <ul>
                 {% for question in integral_question_list %}
@@ -25,6 +27,24 @@
                     </li>
                 {% endfor %}
             </ul>
+
+        <h3>Filter by technique</h3>
+        <form action="" method="GET">
+            {{ filter.form.as_p }}
+            <input type="submit" />
+        </form>
+
+        <p>Technique options:
+            <ul>
+            <li>basic</li>
+            <li>u-substitution</li>
+            <!-- <li>integration by parts</li>
+            <li>trig substitution</li>
+            <li>partial fraction decomposition</li> -->
+            <li>leave blank (gives all problems)</li>
+            </ul>
+        </p>
+
     </body>
 
 </html>

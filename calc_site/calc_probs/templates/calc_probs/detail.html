@@ -22,7 +22,7 @@
                     <h3>&#x1F389; Great job, your answer was correct!!! &#x1F483;</h3>
                     <p>Input was: {{ previous_input }}</p>
                     <p>Rendered input: \({{ latex_previous }}\)</p>
-                    <p><a href="{% url 'calc_probs:detail' random_id %}" align="center">Take me to another random problem!</a></p>
+                    <p><a href="{% url 'calc_probs:random_problem' %}" align="center">Take me to another random problem!</a></p>
                 {% endif %}
                 {% if incorrect %}
                     <h3>&#x1F62D; Sorry, your answer was not correct. Try again! &#x1F600;</h3>

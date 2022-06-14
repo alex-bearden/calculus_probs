@@ -1,5 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
+from django.views import generic
+from django_filters.views import FilterView
+from calc_probs.filters import QuestionFilter
 from sympy import *
 from sympy.printing.latex import latex
 import random
@@ -7,20 +10,27 @@ from calc_probs.indef_integral_checker import checker
 
 from .models import IntegralQuestion
 
-def index(request):
-    integral_question_list = IntegralQuestion.objects.order_by('id')
-    random_id = random.choice(IntegralQuestion.objects.values_list('id', flat=True))
-    context = {
-        'integral_question_list': integral_question_list,
-        'random_id': random_id,
-        }
-    return render(request, 'calc_probs/index.html', context)
+class IndexView(FilterView):
+    template_name = 'calc_probs/index.html'
+    model = IntegralQuestion
+    context_object_name = 'integral_question_list'
+    filterset_class = QuestionFilter
 
-def detail(request, question_id):
-    question = get_object_or_404(IntegralQuestion, pk=question_id)
+    def get_queryset(self):
+        """Return all the integral questions ordered by id."""
+        return IntegralQuestion.objects.order_by('id')
+
+class DetailView(generic.DetailView):
+    model = IntegralQuestion
+    template_name = 'calc_probs/detail.html'
+    context_object_name = 'question'
+
+def random_prob(request):
+    random_id = random.choice(IntegralQuestion.objects.values_list('id', flat=True))
+    question = get_object_or_404(IntegralQuestion, pk=random_id)
     return render(request, 'calc_probs/detail.html',
-                  {'question': question,
-                   })
+                {'question': question,
+                })
 
 def result(request, question_id):
     question = get_object_or_404(IntegralQuestion, pk=question_id)
@@ -38,13 +48,11 @@ def result(request, question_id):
                 })
         elif 'submit' in request.POST:
             if correct:
-                random_id = random.choice(IntegralQuestion.objects.values_list('id', flat=True))
                 return render(request, 'calc_probs/detail.html',
                     {'question': question,
                     'correct': True,
                     'previous_input': request.POST.get('user_answer'),
                     'latex_previous': latex_previous,
-                    'random_id': random_id,
                     })
             if not correct:
                 return render(request, 'calc_probs/detail.html',
@@ -90,5 +98,3 @@ def check_result(request):
                     'prev_ii_input': prev_ii_input,
                     'error_message': 'Invalid input!'
                     })
-
-    
